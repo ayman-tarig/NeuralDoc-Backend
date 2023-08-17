@@ -3,7 +3,7 @@ from django.conf.urls import url
 from .api_views import APISearchModelList, APISearchView
 from .views import (
     SearchAdvancedView, SearchAgainView, SearchBackendReindexView,
-    SearchResultsView, SearchSimpleView, SearchAIView
+    SearchResultsView, SearchSimpleView, SearchAIView, AISearchResultsView
 )
 
 urlpatterns_search = [
@@ -35,10 +35,10 @@ urlpatterns_search = [
         regex=r'^search_ai/$',
         name='search_ai', view=SearchAIView.as_view()
     ),
-    #  url(
-    #     regex=r'^ai_search_results/$', name='ai_search_results',
-    #     view=SearchResultsView.as_view()
-    # ),
+     url(
+        regex=r'^search_ai/results/$', name='search_ai_results',
+        view=AISearchResultsView.as_view()
+    ),
 ]
 
 urlpatterns_tools = [

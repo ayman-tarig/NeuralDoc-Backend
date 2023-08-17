@@ -2,14 +2,18 @@ import logging
 
 from django.conf import settings
 from django.contrib import messages
+from django.http import HttpResponse
 from django.template import RequestContext
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import RedirectView
+from django.views import View
+from django.shortcuts import render
 
 from mayan.apps.views.generics import (
     ConfirmView, FormView, SingleObjectListView
 )
+
 from mayan.apps.views.literals import LIST_MODE_CHOICE_ITEM
 
 from .exceptions import DynamicSearchException
@@ -135,18 +139,30 @@ class SearchAIView(FormView):
             'form': self.get_form(),
             'title': _('AI Search'),
             'submit_method': 'GET',
-            # 'form_action': reverse(
-            #     viewname='search:ai_search_results', kwargs={
-            #         SEARCH_MODEL_NAME_KWARG: 'ai_search'
-            #     }
-            # ),
+            'form_action': reverse(
+                viewname="search:search_ai_results"
+            )
         }
-    
-    def search(self):
-        print("CHECK IF THIS METHOD IS CALLED");
+                
     
     def get_form(self):
         return AISearchForm()
+
+class AISearchResultsView(View):
+    view_icon = icon_search_ai
+    
+    def get(self, request):
+        
+        # TODO: Send a request to ai engine with the query and get the fetched results
+    #     curl --request POST \
+    #  --url http://212.227.189.196:8000/query \
+    #  --header 'accept: application/json' \
+    #  --header 'content-type: application/json' \
+    #  --data '{
+    #  "query": "من هو اخر ملوك السعودية"
+    #  }'
+        
+        return render(request, "ai_search_results.html")
 
 class SearchAdvancedView(SearchSimpleView):
     view_icon = icon_search_advanced
