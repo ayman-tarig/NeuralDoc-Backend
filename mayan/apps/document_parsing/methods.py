@@ -47,15 +47,15 @@ def method_document_file_parsing_submit(self, user=None):
     )
 
     file_ocr_content = task_parse_document_file(self.pk, user_id)
-
-    document_data =  {
-        "id": self.pk,
-        "uuid": self.uuid,
-        "title": self.filename,
-        "content": file_ocr_content,
-        "mime_type": self.mimetype,
-        "size": self.size,
-    }
+    
+    # document_data =  {
+    #     "id": self.pk,
+    #     "uuid": self.uuid,
+    #     "title": self.filename,
+    #     "content": file_ocr_content,
+    #     "mime_type": self.mimetype,
+    #     "size": self.size,
+    # }
     
     # print(document_data)
     
