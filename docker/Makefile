@@ -61,7 +61,7 @@ docker-runtest-container: docker-test-cleanup
 	docker run \
 	--detach \
 	--name test-mayan-edms \
-	--publish 80:8000 \
+	--publish 80:3000 \
 	--volume test-mayan_data:/var/lib/mayan \
 	$(DOCKER_IMAGE_MAYAN_NAME):$(IMAGE_VERSION)
 
@@ -126,7 +126,7 @@ docker-staging-container-mayan-start:
 	--detach \
 	--name mayan-staging-app \
 	--network=mayan-staging \
-	--publish 80:8000 \
+	--publish 80:3000 \
 	--env MAYAN_DATABASE_ENGINE=django.db.backends.postgresql \
 	--env MAYAN_DATABASE_HOST=mayan-staging-postgres \
 	--env MAYAN_DATABASE_NAME=$(DEFAULT_DATABASE_NAME) \

@@ -96,6 +96,6 @@ class URLTestCase(BaseTestCase):
             URL(path='/view', viewname='app:viewname')
 
     def test_path_replace(self):
-        url = URL(url='http://127.0.0.1:8000/view_a', path='view_b')
+        url = URL(url='http://127.0.0.1:3000/view_a', path='view_b')
 
-        self.assertEqual(url.to_string(), 'http://127.0.0.1:8000/view_b')
+        self.assertEqual(url.to_string(), 'http://127.0.0.1:3000/view_b')
