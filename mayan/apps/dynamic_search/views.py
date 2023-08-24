@@ -1,3 +1,4 @@
+import json
 import logging
 
 from django.conf import settings
@@ -9,6 +10,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import RedirectView
 from django.views import View
 from django.shortcuts import render
+from urllib.parse import parse_qs, urlparse
+
+import requests
 
 from mayan.apps.views.generics import (
     ConfirmView, FormView, SingleObjectListView
@@ -153,16 +157,44 @@ class AISearchResultsView(View):
     
     def get(self, request):
         
+              
         # TODO: Send a request to ai engine with the query and get the fetched results
-    #     curl --request POST \
-    #  --url http://212.227.189.196:8000/query \
-    #  --header 'accept: application/json' \
-    #  --header 'content-type: application/json' \
-    #  --data '{
-    #  "query": "من هو اخر ملوك السعودية"
-    #  }'
+        #     curl --request POST \
+        #  --url http://212.227.189.196:8000/query \
+        #  --header 'accept: application/json' \
+        #  --header 'content-type: application/json' \
+        #  --data '{
+        #  "query": "من هو اخر ملوك السعودية"
+        #  }'
         
-        return render(request, "ai_search_results.html")
+        url = request.get_full_path()
+        parsed_url = urlparse(url)
+        query_params = parse_qs(parsed_url.query)
+        
+        search_term = query_params['q'][0]
+        
+        try:
+            url = 'http://212.227.189.196:8000/query'
+            response = requests.post(url, json={"query": search_term})
+
+            # Check the response status
+            if response.status_code == 200:
+                json_data = response.json()
+                # first_ans = json_data['answers'][0]
+                # # print(json_data)
+                # print(first_ans['answer'])
+                # print(first_ans['document_ids'])
+                # # print(first_ans['answer'])
+                # # print(first_ans['answer'])
+                
+                return render(request, "ai_search_results.html", context={"results": json_data})
+            else:
+                print('Error sending file. Status code:', response.status_code)
+
+        except requests.exceptions.RequestException as e:
+            print('An error occurred:', str(e))
+  
+        
 
 class SearchAdvancedView(SearchSimpleView):
     view_icon = icon_search_advanced

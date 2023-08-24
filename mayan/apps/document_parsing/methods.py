@@ -48,18 +48,17 @@ def method_document_file_parsing_submit(self, user=None):
 
     file_ocr_content = task_parse_document_file(self.pk, user_id)
     
-    # document_data =  {
-    #     "id": self.pk,
-    #     "uuid": self.uuid,
-    #     "title": self.filename,
-    #     "content": file_ocr_content,
-    #     "mime_type": self.mimetype,
-    #     "size": self.size,
-    # }
+    document_data =  {
+        "id": self.pk,
+        "uuid": self.uuid,
+        "title": self.filename,
+        "content": file_ocr_content,
+        "mime_type": self.mimetype,
+        "size": self.size,
+    }
     
-    # print(document_data)
-    
-    # method_document_send_to_ai_engine(file_uuid, file_ocr_content)
+    print("BEFORE SENDING TO AI ENGINE");
+    method_document_send_to_ai_engine(document_data)
 
 
 def method_document_send_to_ai_engine(document_data):
@@ -81,15 +80,18 @@ def method_document_send_to_ai_engine(document_data):
             file_content += f"{key}: {value}\n"
 
     # Create a file-like object
-    file_data = {'file': ('file.txt', file_content)}
+    file_data = {'files': ('file.txt', file_content)}
     
+    try:
+        url = 'http://212.227.189.196:8000/file-upload'
+        response = requests.post(url, files=file_data)
 
-    # Send the file to the API endpoint
-    url = 'http://212.227.189.196:8000/file-upload'
-    response = requests.post(url, files=file_data)
-    
-    # Check the response status
-    if response.status_code == 200:
-        print('File sent successfully!')
-    else:
-        print('Error sending file. Status code:', response.status_code)
+        # Check the response status
+        if response.status_code == 200:
+            print('File sent successfully!')
+        else:
+            print('Error sending file. Status code:', response.status_code)
+
+    except requests.exceptions.RequestException as e:
+        print('An error occurred:', str(e))
+        
