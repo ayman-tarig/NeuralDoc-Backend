@@ -59,6 +59,7 @@ def method_document_file_parsing_submit(self, user=None):
     
     print("BEFORE SENDING TO AI ENGINE");
     method_document_send_to_ai_engine(document_data)
+    print("AFTER SENDING TO AI ENGINE");
 
 
 def method_document_send_to_ai_engine(document_data):
@@ -84,7 +85,6 @@ def method_document_send_to_ai_engine(document_data):
 
         # Delete the text file after sending
         os.remove('file.txt')
-
         return response.text
     except:
         print("Error sending enhanced OCR to elasticsearch")
