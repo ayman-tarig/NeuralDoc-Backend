@@ -85,6 +85,8 @@ def method_document_send_to_ai_engine(document_data):
 
         # Delete the text file after sending
         os.remove('file.txt')
+        print("Response is: ")
+        print(response.text)
         return response.text
     except:
         print("Error sending enhanced OCR to elasticsearch")
