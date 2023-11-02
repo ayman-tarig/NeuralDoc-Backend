@@ -57,9 +57,9 @@ def method_document_file_parsing_submit(self, user=None):
         "size": self.size,
     }
     
-    print("BEFORE SENDING TO AI ENGINE");
-    method_document_send_to_ai_engine(document_data)
-    print("AFTER SENDING TO AI ENGINE");
+    # print("BEFORE SENDING TO AI ENGINE");
+    # method_document_send_to_ai_engine(document_data)
+    # print("AFTER SENDING TO AI ENGINE");
 
 
 def method_document_send_to_ai_engine(document_data):
