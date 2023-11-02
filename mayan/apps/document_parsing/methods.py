@@ -75,18 +75,16 @@ def method_document_send_to_ai_engine(document_data):
     
     # Create file content
     
-    try:
-        # Create the text file
-        with open('file.txt', 'w') as file:
-            file.write(document_data['content'])
+    # Create the text file
+    with open('file.txt', 'w') as file:
+        file.write(document_data['content'])
 
-        files = {'files': open('file.txt', 'rb')}
-        response = requests.post("http://34.125.3.208:8000/file-upload", files=files)
+    files = {'files': open('file.txt', 'rb')}
+    response = requests.post("http://34.125.3.208:8000/file-upload", files=files)
 
-        # Delete the text file after sending
-        os.remove('file.txt')
-        print("Response is: ")
-        print(response.text)
-        return response.text
-    except:
-        print("Error sending enhanced OCR to elasticsearch")
+    # Delete the text file after sending
+    os.remove('file.txt')
+    print("Response is: ")
+    print(response.text)
+    return response.text
+  
