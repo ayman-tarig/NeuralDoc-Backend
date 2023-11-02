@@ -101,6 +101,8 @@ class Parser:
                     page_number=document_file_page.page_number
                 )
 
+                # TODO: IMPLEMENT OCR ENHANCEMENT API HERE
+
                 DocumentFilePageContent.objects.update_or_create(
                     document_file_page=document_file_page, defaults={
                         'content': parsed_content
@@ -132,6 +134,7 @@ class PopplerParser(Parser):
     """
     PDF parser using the pdftotext execute from the poppler package.
     """
+
     def __init__(self):
         self.pdftotext_path = setting_pdftotext_path.value
         if not os.path.exists(self.pdftotext_path):

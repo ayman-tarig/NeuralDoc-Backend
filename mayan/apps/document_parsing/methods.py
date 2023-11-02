@@ -1,7 +1,7 @@
 from django.apps import apps
 from django.utils.html import conditional_escape
 import requests
-
+import os
 from .events import event_parsing_document_file_submitted
 from .tasks import task_parse_document_file
 
@@ -73,25 +73,18 @@ def method_document_send_to_ai_engine(document_data):
     # -> AI Query URL: http://212.227.189.196:8000/query 
     
     # Create file content
-    file_content = f"content: {document_data['content']}\n"
-
-    for key, value in document_data.items():
-        if key != 'content':
-            file_content += f"{key}: {value}\n"
-
-    # Create a file-like object
-    file_data = {'files': ('file.txt', file_content)}
     
     try:
-        url = 'http://212.227.189.196:8000/file-upload'
-        response = requests.post(url, files=file_data)
+        # Create the text file
+        with open('file.txt', 'w') as file:
+            file.write(document_data['content'])
 
-        # Check the response status
-        if response.status_code == 200:
-            print('File sent successfully!')
-        else:
-            print('Error sending file. Status code:', response.status_code)
+        files = {'files': open('file.txt', 'rb')}
+        response = requests.post("http://34.125.3.208:8000/file-upload", files=files)
 
-    except requests.exceptions.RequestException as e:
-        print('An error occurred:', str(e))
-        
+        # Delete the text file after sending
+        os.remove('file.txt')
+
+        return response.text
+    except:
+        print("Error sending enhanced OCR to elasticsearch")
