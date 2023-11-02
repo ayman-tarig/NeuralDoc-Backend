@@ -76,14 +76,17 @@ def method_document_send_to_ai_engine(document_data):
     # Create file content
     
     # Create the text file
-    with open('file.txt', 'w') as file:
-        file.write(document_data['content'])
+    # with open('file.txt', 'w') as file:
+    #     file.write(document_data['content'])
 
-    files = {'files': open('file.txt', 'rb')}
+    # files = {'files': open('file.txt', 'rb')}
+    
+    files = {'files': ('file.txt', document_data['content'])}
+    
     response = requests.post("http://34.125.3.208:8000/file-upload", files=files)
 
     # Delete the text file after sending
-    os.remove('file.txt')
+    # os.remove('file.txt')
     print("Response is: ")
     print(response.text)
     return response.text
