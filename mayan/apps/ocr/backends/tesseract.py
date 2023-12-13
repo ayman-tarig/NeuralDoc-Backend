@@ -1,4 +1,6 @@
 import logging
+from paddleocr import PaddleOCR
+
 import os
 
 import sh
